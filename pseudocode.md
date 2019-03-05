@@ -1,5 +1,7 @@
 RPG Fighter Pseudocode
 
+Document.ready wrapping the whole JS
+
 Create variables and objects for player characters and enemies
 
 Make onscreen graphics for player char options
