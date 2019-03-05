@@ -1,5 +1,7 @@
 RPG Fighter Pseudocode
 
+Make bootstrap skeleton
+
 Document.ready wrapping the whole JS
 
 Create variables and objects for player characters and enemies
