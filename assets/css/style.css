@@ -9,6 +9,7 @@ body{
 
 img{
     height: 300px;
+    margin-top: .5rem;
 }
 
 .alert-field{

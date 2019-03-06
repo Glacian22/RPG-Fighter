@@ -53,7 +53,7 @@ $(document).ready(function () {
             $(".alert-field").html("You are the " + player + "! <br> Select your first opponent!");
 
             //hide the player character to choose enemy
-            $(this).hide()
+            $(this).fadeOut(1000)
 
             //set gamestate for enemy selection
             gameState = "selectEnemy";
@@ -66,16 +66,22 @@ $(document).ready(function () {
             $(this).attr("status", "active");
 
             //hide other characters
-            $("[status=inactive]").hide();
-            $("." + player).show();
+            $("[status=inactive]").fadeOut(1000);
+            setTimeout(function () {
+                $("." + player).fadeIn(1000);
+            }, 1000);
             $(".btn").show();
             gameState = "battle";
         }
-        //battle mode ENGAGE
-        else if (gameState === "battle") { }
-
     });
 
+    //battle mode ENGAGE
+    $(".btn").on("click", function () {
+        if (gameState === "battle") {
+        }
+
+
+    });
 
 
 
