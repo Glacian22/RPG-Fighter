@@ -8,21 +8,14 @@ body{
 }
 
 img{
-    /* width: 200px !important; */
     height: 300px;
 }
 
 .alert-field{
     color: white;
-    visibility: visible;
 }
 
 .btn{
     background-color: white;
     border-width: 4px;
-    visibility: hidden;
 }
-
-/* .character{
-    width: 250px;
-} */
