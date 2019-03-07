@@ -17,12 +17,6 @@ $(document).ready(function () {
         this.restImg = restImg;
     }
 
-    //create character objects
-    characters[0] = new character("Wizard", 20, 30, "images/wizard.jpg");
-    characters[1] = new character("Knight", 40, 2, "images/knight.jpg");
-    characters[2] = new character("Priest", 6, 5, "images/priest.jpg");
-    characters[3] = new character("Thief", 15, 8, "images/thief.jpg");
-
 
 
     restartGame();
@@ -36,6 +30,13 @@ $(document).ready(function () {
 
     //resets everything
     function restartGame() {
+
+        //create character objects
+        characters[0] = new character("Wizard", 14, 30, "images/wizard.jpg");
+        characters[1] = new character("Knight", 40, 2, "images/knight.jpg");
+        characters[2] = new character("Priest", 6, 5, "images/priest.jpg");
+        characters[3] = new character("Thief", 15, 8, "images/thief.jpg");
+
         gameState = "start";
         victories = 0;
 
@@ -124,6 +125,8 @@ $(document).ready(function () {
 
         if (gameState === "battle") {
 
+            $(".alert-field").html(characters[enemy].name + " takes damage!");
+
             //deduct HP from enemy, and display it
             characters[enemy].HP -= characters[player].ATK;
             characters[player].ATK += 5;
@@ -170,6 +173,34 @@ $(document).ready(function () {
             }
 
             //ENEMY COUNTER ATTACK
+            if (characters[enemy].HP !== 0) {
+                setTimeout(function () {
+                    $(".alert-field").html(characters[enemy].name + " is counter-attacking!");
+                    characters[player].HP -= characters[enemy].ATK;
+
+                    $("." + characters[player].name + "-img").css("animation", "shake 0.5s");
+                    setTimeout(function () {
+                        $("." + characters[player].name + "-img").css("animation", "");
+                    }, 500);
+
+                    if (characters[player].HP < 0) {
+                        characters[player].HP = 0;
+                        console.log("Player health zero");
+                    }
+                    refreshStats();
+                }, 1500);
+
+
+                //Game Over if player died
+                setTimeout(function () {
+                    if (characters[player].HP === 0) {
+                        $(".alert-field").html("YOU DEAD");
+                        $(".btn").html("Play Again?")
+                        gameState = "done";
+                    }
+                }, 2000);
+            }
+
 
         }
 
