@@ -1,9 +1,10 @@
 $(document).ready(function () {
 
     var gameState = "start";
-    var playerHP;
-    var enemyHP;
     var characters = [];
+    var victories;
+    var player;
+    var enemy;
 
     //attack button starts off hidden
     $(".btn").hide();
@@ -17,13 +18,12 @@ $(document).ready(function () {
     }
 
     //create character objects
-    characters[0] = new character("Wizard", 20, 60, "images/wizard.jpg");
+    characters[0] = new character("Wizard", 20, 30, "images/wizard.jpg");
     characters[1] = new character("Knight", 40, 2, "images/knight.jpg");
     characters[2] = new character("Priest", 6, 5, "images/priest.jpg");
     characters[3] = new character("Thief", 15, 8, "images/thief.jpg");
 
-    var player;
-    var enemy;
+
 
     restartGame();
 
@@ -37,20 +37,30 @@ $(document).ready(function () {
     //resets everything
     function restartGame() {
         gameState = "start";
+        victories = 0;
 
         //initialize character stats and bios
         refreshStats();
+
+        $(".btn").hide();
+        $(".btn").html("Attack!");
+
+        $(".character").attr("status", "inactive");
+        $(".character").show();
+        $(".character").fadeIn();
+        $(".alert-field").html("Choose Your Character")
     }
 
     //start game code
 
-    $(".alert-field").html("Choose Your Character")
 
     //game is driven by click events
     $(".character").on("click", function () {
+        console.log("character clicked, gameState: " + gameState)
 
         //set player character
         if (gameState === "start") {
+            console.log("gamestate: start")
 
             //match player name to character index
             for (var i = 0; i < characters.length; i++) {
@@ -78,7 +88,7 @@ $(document).ready(function () {
         }
         //if player is already selected, choose enemy to fight
         else if (gameState === "selectEnemy") {
-            // enemy = $(this).attr("name");
+            console.log("gamestate: selectEnemy")
 
             //match selected enemy to characters array
             for (var i = 0; i < characters.length; i++) {
@@ -107,33 +117,65 @@ $(document).ready(function () {
 
     //battle mode ENGAGE
     $(".btn").on("click", function () {
+
+        if (gameState === "done") {
+            restartGame();
+        }
+
         if (gameState === "battle") {
 
             //deduct HP from enemy, and display it
             characters[enemy].HP -= characters[player].ATK;
+            characters[player].ATK += 5;
 
             //play the "took damage" animation
             $("." + characters[enemy].name + "-img").css("animation", "shake 0.5s");
-            setTimeout( function(){
+            setTimeout(function () {
                 $("." + characters[enemy].name + "-img").css("animation", "");
             }, 500);
-        
 
-
-            //kill enemy if their HP drops to 0 or below
-            if (characters[enemy].HP <= 0){
-                characters[enemy].HP = 0;
-                $("." + characters[enemy].name).attr("status", "dead");
-            }
-            console.log( $("." + characters[enemy].name).attr("status"));
-            
             //redraw stats onscreen
+            if (characters[enemy].HP < 0) {
+                characters[enemy].HP = 0;
+            }
             refreshStats();
+
+            //kill enemy if their HP drops to 0
+            if (characters[enemy].HP === 0) {
+
+                $("." + characters[enemy].name).attr("status", "dead");
+                $("." + characters[enemy].name).fadeOut(3000);
+
+                victories++;
+
+                $(".alert-field").html("The " + characters[enemy].name + " has been defeated!");
+
+                if (victories === (characters.length - 1)) {
+                    gameState = "done";
+                    $(".btn").html("Play Again?")
+
+                    setTimeout(function () {
+                        $(".alert-field").html("You are the ultimate champion");
+                    }, 2000);
+                } else {
+                    //go select another enemy to fight
+                    $(".btn").hide();
+                    setTimeout(function () {
+                        $("." + characters[player].name).hide();
+                        $("[status=inactive]").fadeIn(1000);
+                        $(".alert-field").html("Choose another opponent!");
+                        gameState = "selectEnemy";
+                    }, 2500);
+                }
+            }
+
+            //ENEMY COUNTER ATTACK
+
         }
 
 
-    });
 
+    });
 
 
 
