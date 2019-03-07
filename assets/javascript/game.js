@@ -3,6 +3,7 @@ $(document).ready(function () {
     var gameState = "start";
     var playerHP;
     var enemyHP;
+    var characters = [];
 
     //attack button starts off hidden
     $(".btn").hide();
@@ -16,25 +17,30 @@ $(document).ready(function () {
     }
 
     //create character objects
-    var playableCharacters = [];
+    characters[0] = new character("Wizard", 20, 60, "images/wizard.jpg");
+    characters[1] = new character("Knight", 40, 2, "images/knight.jpg");
+    characters[2] = new character("Priest", 6, 5, "images/priest.jpg");
+    characters[3] = new character("Thief", 15, 8, "images/thief.jpg");
 
-    var player = "";
-    var enemy = "";
+    var player;
+    var enemy;
 
     restartGame();
+
+    //sets character stats onscreen
+    // function refreshStats(){
+
+    // }
 
     //resets everything
     function restartGame() {
         gameState = "start";
 
         //initialize character stats and bios
-        playableCharacters[0] = new character("wizard", 20, 60, "images/wizard.jpg");
-        playableCharacters[1] = new character("knight", 40, 2, "images/knight.jpg");
-        playableCharacters[2] = new character("priest", 6, 5, "images/priest.jpg");
-        playableCharacters[3] = new character("thief", 15, 8, "images/thief.jpg");
-        
-        for (var i = 0; i < playableCharacters.length; i++) {
-            $("." + playableCharacters[i].name + "-stats").html("Name: " + playableCharacters[i].name + "<br> HP: " + playableCharacters[i].HP + "<br> ATK: " + playableCharacters[i].ATK)
+
+
+        for (var i = 0; i < characters.length; i++) {
+            $("." + characters[i].name + "-stats").html("Name: " + characters[i].name + "<br> HP: " + characters[i].HP + "<br> ATK: " + characters[i].ATK)
         }
     }
 
@@ -47,32 +53,52 @@ $(document).ready(function () {
 
         //set player character
         if (gameState === "start") {
-            player = $(this).attr("name");
-            console.log("character is: ", player);
+
+            //match player name to character index
+            for (var i = 0; i < characters.length; i++) {
+                if (characters[i].name === $(this).attr("name")) {
+                    player = i;
+                }
+            }
+
+            console.log("character is: ", characters[player].name);
             $(this).attr("status", "active");
 
+            //prevent multiple choices
+            gameState = "none"
+
             //set the player character
-            $(".alert-field").html("You are the " + player + "! <br> Select your first opponent!");
+            $(".alert-field").html("You are the " + characters[player].name + "! <br> Select your first opponent!");
 
             //hide the player character to choose enemy
             $(this).fadeOut(1000)
 
-            //set gamestate for enemy selection
-            gameState = "selectEnemy";
-
+            //set gamestate for enemy selection, delay to allow for fadeout
+            setTimeout(function () {
+                gameState = "selectEnemy";
+            }, 1000);
         }
         //if player is already selected, choose enemy to fight
         else if (gameState === "selectEnemy") {
-            enemy = $(this).attr("name");
-            $(".alert-field").html("Time to fight the " + enemy + "!");
+            // enemy = $(this).attr("name");
+
+            //match selected enemy to characters array
+            for (var i = 0; i < characters.length; i++) {
+                if (characters[i].name === $(this).attr("name")) {
+                    enemy = i;
+                }
+            }
+
+
+            $(".alert-field").html("Time to fight the " + characters[enemy].name + "!");
             $(this).attr("status", "active");
 
             //hide other characters
             $("[status=inactive]").fadeOut(1000);
             setTimeout(function () {
-                $("." + player).fadeIn(1000);
+                $("." + characters[player].name).fadeIn(1000);
             }, 1000);
-            setTimeout(function(){
+            setTimeout(function () {
                 $(".btn").show();
             }, 2000);
             gameState = "battle";
@@ -82,7 +108,9 @@ $(document).ready(function () {
     //battle mode ENGAGE
     $(".btn").on("click", function () {
         if (gameState === "battle") {
-            $("." + enemy + "-stat")
+            //deduct HP from enemy, and display it
+            // playableCharacters[playableCharacters.indexOf(enemy)]
+            // $("." + enemy + "-stat")
         }
 
 
