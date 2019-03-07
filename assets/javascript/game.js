@@ -17,10 +17,7 @@ $(document).ready(function () {
 
     //create character objects
     var playableCharacters = [];
-    playableCharacters[0] = new character("wizard", 20, 60, "images/wizard.jpg");
-    playableCharacters[1] = new character("knight", 40, 2, "images/knight.jpg");
-    playableCharacters[2] = new character("priest", 6, 5, "images/priest.jpg");
-    playableCharacters[3] = new character("thief", 15, 8, "images/thief.jpg");
+
     var player = "";
     var enemy = "";
 
@@ -30,7 +27,12 @@ $(document).ready(function () {
     function restartGame() {
         gameState = "start";
 
-        //initialize character bios
+        //initialize character stats and bios
+        playableCharacters[0] = new character("wizard", 20, 60, "images/wizard.jpg");
+        playableCharacters[1] = new character("knight", 40, 2, "images/knight.jpg");
+        playableCharacters[2] = new character("priest", 6, 5, "images/priest.jpg");
+        playableCharacters[3] = new character("thief", 15, 8, "images/thief.jpg");
+        
         for (var i = 0; i < playableCharacters.length; i++) {
             $("." + playableCharacters[i].name + "-stats").html("Name: " + playableCharacters[i].name + "<br> HP: " + playableCharacters[i].HP + "<br> ATK: " + playableCharacters[i].ATK)
         }
@@ -70,7 +72,9 @@ $(document).ready(function () {
             setTimeout(function () {
                 $("." + player).fadeIn(1000);
             }, 1000);
-            $(".btn").show();
+            setTimeout(function(){
+                $(".btn").show();
+            }, 2000);
             gameState = "battle";
         }
     });
@@ -78,6 +82,7 @@ $(document).ready(function () {
     //battle mode ENGAGE
     $(".btn").on("click", function () {
         if (gameState === "battle") {
+            $("." + enemy + "-stat")
         }
 
 
