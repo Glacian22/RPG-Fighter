@@ -28,20 +28,18 @@ $(document).ready(function () {
     restartGame();
 
     //sets character stats onscreen
-    // function refreshStats(){
-
-    // }
+    function refreshStats() {
+        for (var i = 0; i < characters.length; i++) {
+            $("." + characters[i].name + "-stats").html("Name: " + characters[i].name + "<br> HP: " + characters[i].HP + "<br> ATK: " + characters[i].ATK)
+        }
+    }
 
     //resets everything
     function restartGame() {
         gameState = "start";
 
         //initialize character stats and bios
-
-
-        for (var i = 0; i < characters.length; i++) {
-            $("." + characters[i].name + "-stats").html("Name: " + characters[i].name + "<br> HP: " + characters[i].HP + "<br> ATK: " + characters[i].ATK)
-        }
+        refreshStats();
     }
 
     //start game code
@@ -89,7 +87,6 @@ $(document).ready(function () {
                 }
             }
 
-
             $(".alert-field").html("Time to fight the " + characters[enemy].name + "!");
             $(this).attr("status", "active");
 
@@ -100,17 +97,38 @@ $(document).ready(function () {
             }, 1000);
             setTimeout(function () {
                 $(".btn").show();
-            }, 2000);
+            }, 3000);
             gameState = "battle";
+            setTimeout(function () {
+                $(".alert-field").html("You will do more damage every time you attack!");
+            }, 2000)
         }
     });
 
     //battle mode ENGAGE
     $(".btn").on("click", function () {
         if (gameState === "battle") {
+
             //deduct HP from enemy, and display it
-            // playableCharacters[playableCharacters.indexOf(enemy)]
-            // $("." + enemy + "-stat")
+            characters[enemy].HP -= characters[player].ATK;
+
+            //play the "took damage" animation
+            $("." + characters[enemy].name + "-img").css("animation", "shake 0.5s");
+            setTimeout( function(){
+                $("." + characters[enemy].name + "-img").css("animation", "");
+            }, 500);
+        
+
+
+            //kill enemy if their HP drops to 0 or below
+            if (characters[enemy].HP <= 0){
+                characters[enemy].HP = 0;
+                $("." + characters[enemy].name).attr("status", "dead");
+            }
+            console.log( $("." + characters[enemy].name).attr("status"));
+            
+            //redraw stats onscreen
+            refreshStats();
         }
 
 
