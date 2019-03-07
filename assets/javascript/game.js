@@ -198,7 +198,7 @@ $(document).ready(function () {
                         $(".btn").html("Play Again?")
                         gameState = "done";
                     }
-                }, 2000);
+                }, 2500);
             }
 
 
