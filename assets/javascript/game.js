@@ -32,10 +32,10 @@ $(document).ready(function () {
     function restartGame() {
 
         //create character objects
-        characters[0] = new character("Wizard", 14, 30, "images/wizard.jpg");
-        characters[1] = new character("Knight", 40, 2, "images/knight.jpg");
+        characters[0] = new character("Wizard", 8, 20, "images/wizard.jpg");
+        characters[1] = new character("Knight", 30, 2, "images/knight.jpg");
         characters[2] = new character("Priest", 6, 5, "images/priest.jpg");
-        characters[3] = new character("Thief", 15, 8, "images/thief.jpg");
+        characters[3] = new character("Thief", 22, 8, "images/thief.jpg");
 
         gameState = "start";
         victories = 0;
