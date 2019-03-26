@@ -1,4 +1,4 @@
-# unit-4-game, RPG Fighter!
+# RPG Fighter!
 
 This is a game using a basic RPG combat system. You select a character, and then have to battle each of the others, with the strategy revolving around choosing your opponents in the correct order. Watch out for the mage, she's a glass canon!
 
